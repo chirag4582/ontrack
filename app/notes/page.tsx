@@ -1,23 +1,30 @@
-"use client";
-
-import Navbar from "@/components/Navbar";
-import Pronote from "@/components/Pronote";
-import Zen from "@/components/Zen";
-import Notesdisplay from "@/components/Notes";
+"use client"
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import dynamic from "next/dynamic";
+
+import Navbar from "@/components/Navbar";
+
+const Pronote = dynamic(() => import("@/components/Pronote"));
+const Zen = dynamic(() => import("@/components/Zen"));
+const Notesdisplay = dynamic(() => import("@/components/Notes"));
 
 export default function Notes() {
   const [isOpen, setIsOpen] = useState(false);
   const [customClass, setcustomClass] = useState({ sidebar: "hidden" });
   const [renderFile, setrenderFile] = useState("Notesdisplay");
+
   useEffect(() => {
-    if (isOpen) {
-      setcustomClass({ sidebar: "flex-1 bg-slate-900 max-w-xs h-full pb-72" });
-    } else {
-      setcustomClass({ sidebar: "hidden" });
+    if (typeof window !== "undefined") {
+      // This code will run only on the client-side
+      const path = window.location.pathname;
+      if (path === "/notes") {
+        setcustomClass({
+          sidebar: "flex-1 bg-slate-900 max-w-xs h-full pb-72",
+        });
+      }
     }
-  }, [isOpen]);
+  }, []);
 
   const clickHandler = () => {
     setIsOpen((prev) => !prev);
@@ -32,14 +39,13 @@ export default function Notes() {
       return <Notesdisplay />;
     }
   };
+
   return (
     <div>
       <Navbar />
       <Image
         className="absolute top-9 left-9 animate-pop-out"
-        onClick={() => {
-          clickHandler();
-        }}
+        onClick={clickHandler}
         src="/hamburger.svg"
         width={25}
         height={25}
@@ -52,11 +58,11 @@ export default function Notes() {
             onClick={() => {
               setrenderFile("Notesdisplay");
             }}
-            className="text-lg font-bold mt-5 mb-2 p-2  mx-5 w-[68px] text-yellow-400 border border-yellow-500"
+            className="text-lg font-bold mt-5 mb-2 p-2 mx-5 w-[68px] text-yellow-400 border border-yellow-500"
           >
             Notes
           </h1>
-          <q className="mx-6 text-yellow-600 mt-1 mb-5 text-sm"> Your notes </q>
+          <q className="mx-6 text-yellow-600 mt-1 mb-5 text-sm">Your notes</q>
           <h1
             onClick={() => {
               setrenderFile("Pronote");
@@ -79,11 +85,11 @@ export default function Notes() {
           <q className="mx-6 text-yellow-600 mt-1 mb-5 text-sm">
             Your ideas and calm music
           </q>
-          <h1 className="text-red-500 my-[39.7px]  mx-28 animate-pulse">
+          <h1 className="text-red-500 my-[39.7px] mx-28 animate-pulse">
             Coming soon
           </h1>
         </div>
-        {/* main  */}
+        {/* main */}
         <div className="flex-1">{renderComponent()}</div>
       </div>
     </div>
