@@ -1,12 +1,16 @@
 "use client";
+
 import Navbar from "@/components/Navbar";
+import Pronote from "@/components/Pronote";
+import Zen from "@/components/Zen";
+import Notesdisplay from "@/components/Notes";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
 export default function Notes() {
   const [isOpen, setIsOpen] = useState(false);
   const [customClass, setcustomClass] = useState({ sidebar: "hidden" });
-
+  const [renderFile, setrenderFile] = useState("Notesdisplay");
   useEffect(() => {
     if (isOpen) {
       setcustomClass({ sidebar: "flex-1 bg-slate-900 max-w-xs h-full pb-72" });
@@ -19,6 +23,15 @@ export default function Notes() {
     setIsOpen((prev) => !prev);
   };
 
+  const renderComponent = () => {
+    if (renderFile === "Pronote") {
+      return <Pronote />;
+    } else if (renderFile === "Zen") {
+      return <Zen />;
+    } else {
+      return <Notesdisplay />;
+    }
+  };
   return (
     <div>
       <Navbar />
@@ -35,14 +48,43 @@ export default function Notes() {
       <div className="flex">
         {/* sidebar */}
         <div className={`${customClass.sidebar}`}>
-        <h1 className="text-lg font-bold mt-5 mb-2 p-2 mx-5 w-24 text-yellow-400 border border-yellow-500">Pro Note</h1>
-          <q className="mx-6 text-yellow-600 mt-1 mb-5 text-sm">Create your notes for future time saving</q>
-          <h1 className="text-lg font-bold mt-12 mb-2 p-2 mx-5 w-36 text-yellow-400 border border-yellow-500">Zen Typeaway</h1>
-          <q className="mx-6 text-yellow-600 mt-1 mb-5 text-sm">Your ideas and calm music</q>
-          <h1 className="text-red-500 my-20 mx-28 animate-pulse">Coming soon</h1>
+          <h1
+            onClick={() => {
+              setrenderFile("Notesdisplay");
+            }}
+            className="text-lg font-bold mt-5 mb-2 p-2  mx-5 w-[68px] text-yellow-400 border border-yellow-500"
+          >
+            Notes
+          </h1>
+          <q className="mx-6 text-yellow-600 mt-1 mb-5 text-sm"> Your notes </q>
+          <h1
+            onClick={() => {
+              setrenderFile("Pronote");
+            }}
+            className="text-lg font-bold mt-5 mb-2 p-2 mx-5 w-24 text-yellow-400 border border-yellow-500"
+          >
+            Pro Note
+          </h1>
+          <q className="mx-6 text-yellow-600 mt-1 mb-5 text-sm">
+            Create your notes for future time saving
+          </q>
+          <h1
+            onClick={() => {
+              setrenderFile("Zen");
+            }}
+            className="text-lg font-bold mt-8 mb-2 p-2 mx-5 w-36 text-yellow-400 border border-yellow-500"
+          >
+            Zen Typeaway
+          </h1>
+          <q className="mx-6 text-yellow-600 mt-1 mb-5 text-sm">
+            Your ideas and calm music
+          </q>
+          <h1 className="text-red-500 my-[39.7px]  mx-28 animate-pulse">
+            Coming soon
+          </h1>
         </div>
         {/* main  */}
-        <div className="flex-1"></div>
+        <div className="flex-1">{renderComponent()}</div>
       </div>
     </div>
   );

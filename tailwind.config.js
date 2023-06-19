@@ -46,7 +46,7 @@ module.exports = {
       animation: {
         "slide-transition": "slide 0.5s linear forwards",
         "rotate-stop": "custrot 1s linear forwards",
-        "pop-out": "pop 1s linear forwards",
+        "pop-out": "pop 3s linear forwards",
       },
     },
   },
